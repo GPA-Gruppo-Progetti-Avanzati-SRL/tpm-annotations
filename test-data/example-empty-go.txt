@@ -1,0 +1,26 @@
+/*
+ * Copyright....
+ */
+// @Path("/api/v1")
+package mypkgName
+
+import (
+	"fmt"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/gin-gonic/gin"
+)
+
+/*
+ * Structures and test types.
+ */
+type UserStruct struct {
+
+}
+
+type H = gin.HandlerFunc
+
+// @GET
+// @Path("sayHello/:id")
+func (us *UserStruct)UserMethod(ctx *gin.Context) {
+
+}

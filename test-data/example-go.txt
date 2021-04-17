@@ -1,0 +1,63 @@
+/*
+ * Copyright....
+ */
+// @Path("/api/v1")
+package mypkgName
+
+import (
+	"fmt"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/gin-gonic/gin"
+)
+
+/*
+ * Structures and test types.
+ */
+type UserStruct struct {
+
+}
+
+type H = gin.HandlerFunc
+
+/*
+ * Funzione bare bones.
+ */
+
+// @GET
+// @Path("sayHello/:id")
+func GinHandler(ctx *gin.Context) {
+
+}
+
+/*
+ * Closure wrapper returning a gin defined type. Annotated param.
+ */
+// @GET
+// @Path("sayHello/:id")
+func GinHandlerWrappedHandlerFunc(/* @Param("port") */ serverPort int, /* @Param("ptr2Value") */ ptr2Value *UserStruct, /* @Param("value") */ value userStruct) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+	}
+}
+
+/*
+ * Closure wrapper returning func.
+ */
+// @GET
+// @Path("sayHello/:id")
+func GinHandlerWrappedFunc() func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+
+	}
+}
+
+/*
+ * Closure wrapper returning a user alias.
+ */
+// @GET
+// @Path("sayHello/:id")
+func GinHandlerWrappedH() H {
+	return func(ctx *gin.Context) {
+
+	}
+}
