@@ -2,8 +2,8 @@ package lexer_test
 
 import (
 	"fmt"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/annotations/lexer"
 	"testing"
-	"tpm-annotations/annotations/lexer"
 )
 
 const (

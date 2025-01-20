@@ -1,8 +1,8 @@
 package lexer_test
 
 import (
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/annotations/lexer"
 	"testing"
-	"tpm-annotations/annotations/lexer"
 )
 
 type TokenVal struct {
@@ -33,6 +33,17 @@ func Test_Annotations(t *testing.T) {
 	}
 
 	processTestCase(t, "// @Path(param = \"/api/v1\", \"ciao\" )\n// Deprecated:", cases)
+
+	cases = []TokenVal{
+		{lexer.AnnotationToken, "@DocxInclude"},
+		{lexer.LParenToken, "("},
+		{lexer.IdentifierToken, "src"},
+		{lexer.EqualToken, "="},
+		{lexer.StringToken, "\"fragment.xml\""},
+		{lexer.RParenToken, ")"},
+	}
+
+	processTestCase(t, `// @DocxInclude (src="fragment.xml") whatever`, cases)
 }
 
 func processTestCase(t *testing.T, source string, cases []TokenVal) {

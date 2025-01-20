@@ -1,7 +1,7 @@
 /*
  * Copyright....
  */
-package mypkgName
+package mypkgName2
 
 import (
 	"fmt"
@@ -55,8 +55,8 @@ func GinHandlerWrappedFunc() func(ctx *gin.Context) {
  */
 // @GET
 // @Path("sayHello/:id")
-func GinHandlerWrappedH() H {
-	return func(ctx *gin.Context) {
+func GinHandlerWrappedH() UserStruct {
+	return UserStruct {
 
 	}
 }

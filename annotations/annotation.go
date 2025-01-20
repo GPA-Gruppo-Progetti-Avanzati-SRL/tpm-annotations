@@ -96,7 +96,23 @@ func NewAnnotation(n string, v string, params map[string]interface{}) (Annotatio
 
 }
 
-// Validation related methods
+// AnnotationGroup: Validation related methods
+
+// HasAtLeastOneOf return true if there is at least one annotation in the provided set.
+func (ang AnnotationGroup) HasAtLeastOneOf(n ...string) bool {
+	for _, a := range ang {
+		m := strings.ToLower(a.GetName())
+		for _, s := range n {
+			if strings.ToLower(s) == m {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+// GetFirstIn get the first annotation in group by name
 func (ang AnnotationGroup) GetFirstIn(n ...string) Annotation {
 	for _, a := range ang {
 		m := strings.ToLower(a.GetName())
@@ -110,6 +126,7 @@ func (ang AnnotationGroup) GetFirstIn(n ...string) Annotation {
 	return nil
 }
 
+// Accept return error if it finds something not in the set.
 func (ang AnnotationGroup) Accept(n ...string) error {
 	for _, a := range ang {
 		found := false
@@ -129,6 +146,7 @@ func (ang AnnotationGroup) Accept(n ...string) error {
 	return nil
 }
 
+// NoDuplicates return error if it finds duplicates by name
 func (ang AnnotationGroup) NoDuplicates() error {
 
 	var err error
@@ -178,6 +196,8 @@ func (ang AnnotationGroup) ZeroOrOneOf(acceptedAnns ...string) error {
 }
 */
 
+// MustHaveExactlyOneOutOf return error if it finds two annotation with a name in the set. Used for example to check you
+// have only one http method listed: different names but same category...
 func (ang AnnotationGroup) MustHaveExactlyOneOutOf(ans ...string) error {
 
 	var err error

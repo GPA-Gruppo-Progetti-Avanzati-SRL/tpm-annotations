@@ -19,8 +19,7 @@ type UserStruct struct {
 
 type H = gin.HandlerFunc
 
-// @GET
-// @Path("sayHello/:id")
+
 func (us *UserStruct)UserMethod(ctx *gin.Context) {
 
 }

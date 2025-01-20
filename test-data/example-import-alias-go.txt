@@ -1,0 +1,22 @@
+/*
+ * Copyright....
+ */
+// @Path("/api/v1")
+package mypkgName
+
+import (
+	"fmt"
+	"github.com/davecgh/go-spew/spew"
+	mygin "github.com/gin-gonic/gin"
+)
+
+/*
+ * Funzione bare bones.
+ */
+
+// @GET
+// @Path("sayHello/:id")
+func GinHandler(ctx *mygin.Context) {
+
+}
+

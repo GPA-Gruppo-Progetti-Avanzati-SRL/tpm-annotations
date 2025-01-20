@@ -1,8 +1,8 @@
 package annotations_test
 
 import (
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/annotations"
 	"testing"
-	"tpm-annotations/annotations"
 )
 
 func Test_Annotations(t *testing.T) {

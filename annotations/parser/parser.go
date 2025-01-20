@@ -3,9 +3,9 @@ package parser
 import (
 	"errors"
 	"fmt"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/annotations"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/annotations/lexer"
 	"strings"
-	"tpm-annotations/annotations"
-	"tpm-annotations/annotations/lexer"
 )
 
 func Parse(s string) (annotations.AnnotationGroup, error) {
@@ -54,6 +54,9 @@ const (
 func newAnnotation(n string, l *lexer.L) (annotations.Annotation, *lexer.Token, error) {
 	v := ""
 
+	pn := ""
+	pv := ""
+	var annotationParams map[string]interface{}
 	state := ParsedStart
 	for {
 		t, done := l.NextToken()
@@ -78,10 +81,16 @@ func newAnnotation(n string, l *lexer.L) (annotations.Annotation, *lexer.Token, 
 				return nil, nil, errors.New(fmt.Sprintf("found '(' when state is %d", state))
 			}
 		case lexer.RParenToken:
-			if state == ParsedLParen || state == ParsedStringValue || state == ParsedParam {
+			switch state {
+			case ParsedParam:
+				a, e := annotations.NewAnnotation(n, v, annotationParams)
+				return a, nil, e
+			case ParsedLParen:
+				fallthrough
+			case ParsedStringValue:
 				a, e := annotations.NewAnnotation(n, v, nil)
 				return a, nil, e
-			} else {
+			default:
 				return nil, nil, errors.New(fmt.Sprintf("found ')' when state is %d", state))
 			}
 		case lexer.StringToken:
@@ -90,7 +99,12 @@ func newAnnotation(n string, l *lexer.L) (annotations.Annotation, *lexer.Token, 
 				v = strings.TrimPrefix(strings.TrimSuffix(t.Value, "\""), "\"")
 				state = ParsedStringValue
 			case ParsedEqual:
+				pv = strings.TrimPrefix(strings.TrimSuffix(t.Value, "\""), "\"")
 				state = ParsedParam
+				if annotationParams == nil {
+					annotationParams = make(map[string]interface{})
+				}
+				annotationParams[pn] = pv
 			default:
 				return nil, nil, errors.New(fmt.Sprintf("found %s when state is %d", t.Value, state))
 			}
@@ -109,6 +123,7 @@ func newAnnotation(n string, l *lexer.L) (annotations.Annotation, *lexer.Token, 
 		case lexer.IdentifierToken:
 			if state == ParsedComma || state == ParsedLParen {
 				state = ParsedIdentifier
+				pn = t.Value
 			} else {
 				return nil, nil, errors.New(fmt.Sprintf("found %s when state is %d", t.Value, state))
 			}

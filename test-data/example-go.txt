@@ -34,7 +34,7 @@ func GinHandler(ctx *gin.Context) {
  */
 // @GET
 // @Path("sayHello/:id")
-func GinHandlerWrappedHandlerFunc(/* @Param("port") */ serverPort int, /* @Param("ptr2Value") */ ptr2Value *UserStruct, /* @Param("value") */ value userStruct) gin.HandlerFunc {
+func GinHandlerWrappedHandlerFunc(/* @Param("port") */ serverPort int, ptr2Value *UserStruct, /* @Param("value") */ value userStruct) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 	}
