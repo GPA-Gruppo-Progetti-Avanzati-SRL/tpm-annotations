@@ -3,7 +3,8 @@ package gaxrs
 import (
 	"embed"
 	"errors"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-annotations/util"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/templateutil"
 	"github.com/rs/zerolog/log"
 	"path/filepath"
 	"strings"
@@ -131,9 +132,9 @@ func getOutputFilename(prefix string, baseName string) string {
 	return baseName
 }
 
-func loadTemplate(resDirectory string, templatePath ...string) ([]util.TemplateInfo, bool) {
+func loadTemplate(resDirectory string, templatePath ...string) ([]templateutil.Info, bool) {
 
-	res := make([]util.TemplateInfo, 0)
+	res := make([]templateutil.Info, 0)
 	for _, tpath := range templatePath {
 
 		tmplContent, err := templates.ReadFile(tpath)
@@ -151,7 +152,7 @@ func loadTemplate(resDirectory string, templatePath ...string) ([]util.TemplateI
 			tname = strings.TrimSuffix(tname, ext)
 		}
 
-		res = append(res, util.TemplateInfo{Name: tname, Content: string(tmplContent)})
+		res = append(res, templateutil.Info{Name: tname, Content: string(tmplContent)})
 	}
 
 	return res, true
@@ -171,12 +172,12 @@ func getTemplateUtilityFunctions() template.FuncMap {
 	return fMap
 }
 
-func parseTemplateWithFuncMapsProcessWrite2File(templates []util.TemplateInfo, fMaps template.FuncMap, templateData interface{}, outputFile string, formatSource bool) error {
+func parseTemplateWithFuncMapsProcessWrite2File(templates []templateutil.Info, fMaps template.FuncMap, templateData interface{}, outputFile string, formatSource bool) error {
 
-	if pkgTemplate, err := util.ParseTemplates(templates, fMaps); err != nil {
+	if pkgTemplate, err := templateutil.Parse(templates, fMaps); err != nil {
 		return err
 	} else {
-		if err := util.ProcessTemplateWrite2File(pkgTemplate, templateData, outputFile, formatSource); err != nil {
+		if err := templateutil.ProcessWrite2File(pkgTemplate, templateData, outputFile, formatSource); err != nil {
 			return err
 		}
 	}

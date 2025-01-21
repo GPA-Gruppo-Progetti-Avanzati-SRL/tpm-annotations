@@ -73,12 +73,14 @@ func NewAnnotation(n string, v string, params map[string]interface{}) (Annotatio
 	} else {
 		var result = reflect.New(t)
 		input := make(map[string]interface{})
-		input["Name"] = n
+		input["name"] = n
 		if v != "" {
-			input["Value"] = v
+			input["value"] = v
 		}
 		if params != nil {
-			input["params"] = params
+			for k, v := range params {
+				input[k] = v
+			}
 		}
 
 		err := mapstructure.Decode(input, result.Interface())
