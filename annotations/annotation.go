@@ -4,9 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mitchellh/mapstructure"
+	"github.com/rs/zerolog/log"
 	"reflect"
 	"strings"
 )
+
+var NotFoundInRegistry = errors.New("annotation not found in registry")
 
 func init() {
 	registry = make(map[string]reflect.Type)
@@ -63,13 +66,16 @@ func (a annotationImpl) GetValue() string {
 }
 
 func NewAnnotation(n string, v string, params map[string]interface{}) (Annotation, error) {
+	const semLogContext = "annotation::new"
 
 	if registry == nil {
-		return nil, errors.New(fmt.Sprintf("the requested annotation cannot be found in registry: %s", n))
+		log.Error().Err(NotFoundInRegistry).Str("annotation", n).Msg(semLogContext)
+		return nil, NotFoundInRegistry
 	}
 
 	if t, ok := registry[strings.ToLower(n)]; !ok {
-		return nil, errors.New(fmt.Sprintf("the requested annotation cannot be found in registry: %s", n))
+		log.Error().Err(NotFoundInRegistry).Str("annotation", n).Msg(semLogContext)
+		return nil, NotFoundInRegistry
 	} else {
 		var result = reflect.New(t)
 		input := make(map[string]interface{})
